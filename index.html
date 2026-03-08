@@ -15,7 +15,6 @@ body {
   height: 100vh;
   margin: 0;
 }
-
 #app {
   background: #222;
   padding: 20px;
@@ -23,57 +22,21 @@ body {
   width: 300px;
   text-align: center;
 }
-
-h2 {
-  color: #ff7a5a;
-  margin-bottom: 10px;
-}
-
-h1 {
-  margin: 0 0 20px;
-  color: #ffe0b2;
-}
-
+h2 { color: #ff7a5a; margin-bottom: 10px; }
+h1 { margin: 0 0 20px; color: #ffe0b2; }
 input {
-  width: 100%;
-  padding: 8px;
-  margin-bottom: 10px;
-  border: none;
-  border-radius: 6px;
-  background: #333;
-  color: #fdf6e3;
+  width: 100%; padding: 8px; margin-bottom: 10px;
+  border: none; border-radius: 6px; background: #333; color: #fdf6e3;
 }
-
-input::placeholder {
-  color: #ccc;
-}
-
+input::placeholder { color: #ccc; }
 button {
-  padding: 8px 12px;
-  margin: 5px;
-  border: none;
-  border-radius: 6px;
-  background: #ff7a5a;
-  color: #fff;
+  padding: 8px 12px; margin: 5px;
+  border: none; border-radius: 6px; background: #ff7a5a; color: #fff;
   cursor: pointer;
 }
-
-button:hover {
-  background: #ff5e3a;
-}
-
-ul {
-  list-style: none;
-  padding: 0;
-  margin-top: 15px;
-  text-align: left;
-}
-
-ul li {
-  padding: 5px;
-  border-bottom: 1px solid #333;
-  color: #ffe0b2;
-}
+button:hover { background: #ff5e3a; }
+ul { list-style: none; padding: 0; margin-top: 15px; text-align: left; }
+ul li { padding: 5px; border-bottom: 1px solid #333; color: #ffe0b2; }
 </style>
 </head>
 <body>
@@ -97,6 +60,22 @@ const d = document.getElementById('desc');
 const a = document.getElementById('amt');
 const l = document.getElementById('list');
 
+window.onload = function() {
+  const storedTotal = localStorage.getItem('total');
+  const storedItems = JSON.parse(localStorage.getItem('items') || '[]');
+
+  if (storedTotal) {
+    total = parseFloat(storedTotal);
+    b.innerText = total;
+  }
+
+  storedItems.forEach(item => {
+    const li = document.createElement('li');
+    li.textContent = item.desc + ": " + item.amount;
+    l.appendChild(li);
+  });
+};
+
 function add() {
   const item = d.value.trim();
   const amount = parseFloat(a.value);
@@ -109,6 +88,11 @@ function add() {
     li.textContent = item + ": " + amount;
     l.appendChild(li);
 
+    const items = JSON.parse(localStorage.getItem('items') || '[]');
+    items.push({desc: item, amount: amount});
+    localStorage.setItem('items', JSON.stringify(items));
+    localStorage.setItem('total', total);
+
     d.value = '';
     a.value = '';
   }
@@ -118,6 +102,7 @@ function resetBudget() {
   total = 0;
   b.innerText = total;
   l.innerHTML = '';
+  localStorage.clear();
 }
 </script>
 

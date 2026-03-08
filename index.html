@@ -3,90 +3,95 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SEGARA</title>
+<title>Sumaray Budget</title>
+
 <link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#222">
+<meta name="theme-color" content="#333333">
 
 <style>
 body {
-  font-family: sans-serif;
-  background: #111;
-  color: #f0f0f0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
+  font-family: Arial, sans-serif;
+  text-align: center;
+  background: #1e1e1e;
+  color: #eee;
   margin: 0;
+  padding: 20px;
 }
 
 #app {
-  background: #222;
+  background: #2c2c2c;
   padding: 20px;
-  border-radius: 10px;
   width: 300px;
-  text-align: center;
+  margin: 50px auto;
+  border-radius: 8px;
 }
 
 h2 {
-  color: #ff7a5a;
   margin-bottom: 10px;
+  color: #eee;
 }
 
 h1 {
-  margin: 0 0 20px;
-  color: #ffe0b2;
+  margin-bottom: 20px;
+  color: #f5f5f5;
 }
 
 input {
-  width: 100%;
   padding: 8px;
-  margin-bottom: 10px;
-  border: none;
-  border-radius: 6px;
-  background: #333;
-  color: #f0f0f0;
+  margin: 5px 0;
+  width: 90%;
+  border: 1px solid #555;
+  border-radius: 5px;
+  background: #1e1e1e;
+  color: #eee;
+}
+
+input::placeholder {
+  color: #aaa;
 }
 
 button {
-  padding: 8px 12px;
-  margin: 5px;
+  padding: 10px 20px;
+  margin-top: 10px;
+  margin-right: 5px;
+  background: #555;
+  color: #eee;
   border: none;
-  border-radius: 6px;
-  background: #ff7a5a;
-  color: #fff;
+  border-radius: 5px;
   cursor: pointer;
+  transition: background 0.3s;
 }
 
 button:hover {
-  background: #ff5e3a;
+  background: #777;
 }
 
 ul {
   list-style: none;
   padding: 0;
-  margin-top: 15px;
+  margin-top: 20px;
   text-align: left;
 }
 
 ul li {
-  padding: 5px;
-  border-bottom: 1px solid #333;
-  color: #ffe0b2;
+  padding: 5px 10px;
+  border-bottom: 1px solid #444;
+  color: #ccc;
 }
 </style>
 </head>
 <body>
 
 <div id="app">
-  <h2>Budget</h2>
-  <h1 id="bal">0</h1>
+<h2>Budget</h2>
+<h1 id="bal">0</h1>
 
-  <input type="text" id="desc" placeholder="Item">
-  <input type="number" id="amt" placeholder="Amount">
-  <button onclick="add()">Add</button>
-  <button onclick="resetBudget()">Reset</button>
+<input type="text" id="desc" placeholder="Item">
+<input type="number" id="amt" placeholder="Amount">
+<button onclick="add()">Add</button>
+<button onclick="resetBudget()">Reset</button>
 
-  <ul id="list"></ul>
+<ul id="list"></ul>
 </div>
 
 <script>
@@ -97,16 +102,16 @@ const a = document.getElementById('amt');
 const l = document.getElementById('list');
 
 function add() {
-  let v = parseFloat(a.value);
-  let n = d.value;
+  const item = d.value.trim();
+  const amount = parseFloat(a.value);
 
-  if (n && v) {
-    total += v;
+  if (item && !isNaN(amount)) {
+    total += amount;
     b.innerText = total;
 
-    let i = document.createElement('li');
-    i.innerText = n + ": " + v;
-    l.appendChild(i);
+    const li = document.createElement('li');
+    li.textContent = item + ": " + amount;
+    l.appendChild(li);
 
     d.value = '';
     a.value = '';
@@ -117,11 +122,6 @@ function resetBudget() {
   total = 0;
   b.innerText = total;
   l.innerHTML = '';
-  localStorage.clear();
-}
-
-if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.register("service-worker.js");
 }
 </script>
 

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SEGARA</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#222">
+
+<style>
+body {
+  font-family: sans-serif;
+  background: #111;
+  color: #f0f0f0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+}
+
+#app {
+  background: #222;
+  padding: 20px;
+  border-radius: 10px;
+  width: 300px;
+  text-align: center;
+}
+
+h2 {
+  color: #ff7a5a;
+  margin-bottom: 10px;
+}
+
+h1 {
+  margin: 0 0 20px;
+  color: #ffe0b2;
+}
+
+input {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+  border: none;
+  border-radius: 6px;
+  background: #333;
+  color: #f0f0f0;
+}
+
+button {
+  padding: 8px 12px;
+  margin: 5px;
+  border: none;
+  border-radius: 6px;
+  background: #ff7a5a;
+  color: #fff;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #ff5e3a;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  margin-top: 15px;
+  text-align: left;
+}
+
+ul li {
+  padding: 5px;
+  border-bottom: 1px solid #333;
+  color: #ffe0b2;
+}
+</style>
+</head>
+<body>
+
+<div id="app">
+  <h2>Budget</h2>
+  <h1 id="bal">0</h1>
+
+  <input type="text" id="desc" placeholder="Item">
+  <input type="number" id="amt" placeholder="Amount">
+  <button onclick="add()">Add</button>
+  <button onclick="resetBudget()">Reset</button>
+
+  <ul id="list"></ul>
+</div>
+
+<script>
+let total = 0;
+const b = document.getElementById('bal');
+const d = document.getElementById('desc');
+const a = document.getElementById('amt');
+const l = document.getElementById('list');
+
+function add() {
+  let v = parseFloat(a.value);
+  let n = d.value;
+
+  if (n && v) {
+    total += v;
+    b.innerText = total;
+
+    let i = document.createElement('li');
+    i.innerText = n + ": " + v;
+    l.appendChild(i);
+
+    d.value = '';
+    a.value = '';
+  }
+}
+
+function resetBudget() {
+  total = 0;
+  b.innerText = total;
+  l.innerHTML = '';
+  localStorage.clear();
+}
+
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("service-worker.js");
+}
+</script>
+
+</body>
+</html>
